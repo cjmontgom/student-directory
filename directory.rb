@@ -1,10 +1,12 @@
 def input_students
-  puts "Please enter the names of the students"
+  puts "Please enter the names of the students, followed by the students hobby, and country of birth"
   puts "To finish, just hit return twice"
   students = []
   name = gets.chomp
   while !name.empty? do
-    students << {name: name, cohort: :november}
+    hobby = gets.chomp
+    country_of_birth = gets.chomp
+    students << {name: name, cohort: :november, hobby: hobby, country: country_of_birth}
     puts "Now we have #{students.count} students."
     name = gets.chomp
   end
@@ -17,10 +19,8 @@ def print_header
 end
 
 def print(students)
-  students.each_with_index do |student, index|
-    if student[:name].length < 12 && student[:name].start_with?("a")
-      puts "#{index + 1}. #{student[:name]}, (#{student[:cohort]} cohort)"
-    end
+  students.map.with_index do |student, index|
+      puts "#{index + 1}. #{student[:name]}, (#{student[:cohort]} cohort). Hobby: #{student[:hobby]}. Born: #{student[:country]}"
   end
 end
 
