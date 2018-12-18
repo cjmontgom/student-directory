@@ -18,9 +18,11 @@ def print_header
   puts "-------------"
 end
 
-def print(students)
-  students.map.with_index do |student, index|
-      puts "#{index + 1}. #{student[:name]}, (#{student[:cohort]} cohort). Hobby: #{student[:hobby]}. Born: #{student[:country]}"
+def display(students)
+  students.each_with_index do |student, index|
+    print "#{index + 1}. #{student[:name]}, (#{student[:cohort]} cohort)".ljust(40)
+    print " Hobby: #{student[:hobby]}".ljust(40)
+    puts " Birthplace: #{student[:country]}"
   end
 end
 
@@ -31,5 +33,5 @@ end
 
 students = input_students
 print_header
-print(students)
+display(students)
 print_footer(students)
