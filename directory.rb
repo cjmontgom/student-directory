@@ -10,6 +10,11 @@ def input_students
     puts "Now we have #{students.count} students."
     name = gets.chomp
   end
+  students.each do |data|
+    if data[:hobby].empty?
+      data[:hobby] << "Unknown"
+    end
+  end
  students
 end
 
