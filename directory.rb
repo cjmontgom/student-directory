@@ -1,14 +1,16 @@
+@students = []
+
 def input_students
   puts "Please enter the name of the student"
-  name = gets.delete("\n")
+  name = STDIN.gets.delete("\n")
   while !name.empty? do
     puts "Please enter student's cohort"
-    cohort = gets.chomp
+    cohort = STDIN.gets.chomp
     @students << {name: name, cohort: cohort}
     puts "Now we have #{@students.count} students."
     puts "Please enter the name of the next student"
     puts "To finish, just hit return again"
-    name = gets.chomp
+    name = STDIN.gets.chomp
   end
   @students.each do |student|
     if student[:cohort].empty?
@@ -27,7 +29,7 @@ def print_students_list
   if @students.length >= 1
     def pick_cohort
       puts "Which cohort would you like to view?"
-      cohort = gets.chomp
+      cohort = STDIN.gets.chomp
       if cohort.empty?
         pick_cohort
       end
@@ -85,10 +87,9 @@ def process(selection)
 end
 
 def interactive_menu
-  @students = []
   loop do
     print_menu
-    process(gets.chomp) #pass user selection as the argument to process
+    process(STDIN.gets.chomp) #pass user selection as the argument to process
   end
 end
 
@@ -102,13 +103,26 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    @students << {name: name, cohort: cohort}
   end
   file.close
 end
 
+def try_load_students
+  filename = ARGV.first # first argument from the command line
+  return if filename.nil? # get out of the method if it isn't given
+  if File.exists?(filename) # if it exists
+    load_students(filename)
+     puts "Loaded #{@students.count} from #{filename}"
+  else # if it doesn't exist
+    puts "Sorry, #{filename} doesn't exist."
+    exit # quit the program
+  end
+end
+
+try_load_students
 interactive_menu
